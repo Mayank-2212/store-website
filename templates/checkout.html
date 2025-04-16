@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Checkout Page {% endblock %}
+
+{% block content %}
+
+<!-- ============================ COMPONENT 2 ================================= -->
+<div class="row">
+    <main class="col-md-8">
+
+<article class="card mb-4">
+<div class="card-body">
+<h4 class="card-title mb-4">Review cart</h4>
+<div class="row">
+    {% for item in cart_items %}
+    <div class="col-md-6">
+        <figure class="itemside  mb-4">
+            <div class="aside"><img src="{{item.product.product_image.url}}" class="border img-sm"></div>
+            <figcaption class="info">
+                <p>{{item.product.product_name}}</p>
+                <span class="text-muted">{{item.product.quantiy}}x = ${{item.product.price}}</span>
+            </figcaption>
+        </figure>
+    </div> <!-- col.// -->
+    {% endfor %}
+
+    {% comment %} <div class="col-md-6">
+        <figure class="itemside  mb-4">
+            <div class="aside"><img src="./images/items/2.jpg" class="border img-sm"></div>
+            <figcaption class="info">
+                <p>Apple iPad (2019) 32Gb Wi-Fi gold </p>
+                <span class="text-muted">2x = $560 </span>
+            </figcaption>
+        </figure>
+    </div> <!-- col.// -->
+
+    <div class="col-md-6">
+        <figure class="itemside mb-4">
+            <div class="aside"><img src="./images/items/3.jpg" class="border img-sm"></div>
+            <figcaption class="info">
+                <p>Apple iPad (2019) 32Gb Wi-Fi gold </p>
+                <span class="text-muted">2x = $560 </span>
+            </figcaption>
+        </figure>
+    </div> <!-- col.// -->
+
+    <div class="col-md-6">
+        <figure class="itemside  mb-4">
+            <div class="aside"><img src="./images/items/4.jpg" class="border img-sm"></div>
+            <figcaption class="info">
+                <p>Apple iPad (2019) 32Gb Wi-Fi gold </p>
+                <span class="text-muted">2x = $560 </span>
+            </figcaption>
+        </figure>
+    </div> <!-- col.// -->  {% endcomment %}
+
+</div> <!-- row.// -->
+</div> <!-- card-body.// -->
+</article> <!-- card.// -->
+
+
+<article class="card mb-4">
+<div class="card-body">
+<h4 class="card-title mb-4">Contact info</h4>
+<form action="">
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label>Frst name</label>
+            <input type="text" placeholder="Type here" value={{request.user.first_name}} class="form-control">
+        </div>
+        <div class="form-group col-sm-6">
+            <label>Last name</label>
+            <input type="text" placeholder="Type here" value={{request.user.last_name}} class="form-control">
+        </div>
+        <div class="form-group col-sm-6">
+            <label>Phone</label>
+            <input type="text"  value="+91"{{request.user.phone_number}} class="form-control">
+        </div>
+        <div class="form-group col-sm-6">
+            <label>Email</label>
+            <input type="email" placeholder="example@gmail.com" value={{request.user.email}} class="form-control">
+        </div>
+    </div> <!-- row.// -->	
+</form>
+</div> <!-- card-body.// -->
+</article> <!-- card.// -->
+
+
+<article class="card mb-4">
+<div class="card-body">
+<h4 class="card-title mb-4">Delivery info</h4>
+<form action="POST" method="POST">
+    {% csrf_token %}
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label>Country*</label>
+            <input type = "text" placeholder = "Type here" value={{request.user.country}} name = "country" class = "form-control">
+            {% comment %} <select name="" class="form-control">
+                <option value="">India</option>
+                <option value="">United States</option>
+                <option value="">France</option>
+                <option value="">Italy</option> {% endcomment %}
+            </select>
+        </div>
+        <div class="form-group col-sm-6">
+            <label>State*</label>
+            <input type="text" placeholder="Type here" value={{request.user.state}} name = "state" class="form-control">
+        </div>
+        <div class="form-group col-sm-8">
+            <label>Street*</label>
+            <input type="text" placeholder="Type here" value={{request.user.street}} name = "street" class="form-control">
+        </div>
+        <div class="form-group col-sm-4">
+            <label>Building</label>
+            <input type="text" placeholder="" value={{request.user.building}} name= "building" class="form-control">
+        </div>
+        <div class="form-group col-sm-4">
+            <label>House</label>
+            <input type="text" placeholder="Type here" value={{request.user.house}} name = "house" class="form-control">
+        </div>
+        <div class="form-group col-sm-4">
+            <label>Postal code</label>
+            <input type="text" placeholder="" value={{request.user.postal_code}} name = "postal_code" class="form-control">
+        </div>
+        <div class="form-group col-sm-4">
+            <label>Zip</label>
+            <input type="text" placeholder="" value={{request.user.zip}} name = "zip" class="form-control">
+        </div>
+        <button type='submit'>SUBMIT</button>   
+
+
+    </div> <!-- row.// -->	
+
+</form>
+</div> <!-- card-body.// -->
+</article> <!-- card.// -->
+
+<method="POST">
+    {% csrf_token %}
+<article class="accordion" id="accordion_pay">
+<div class="card">
+    <header class="card-header">
+        <img src="gpay.png" class="float-right" height="24"> 
+        <label class="form-check collapsed" data-toggle="collapse" data-target="#pay_paynet">
+            <input class="form-check-input" name="payment-option" checked type="radio" value="option2">
+            <h6 class="form-check-label"> 
+                Gpay 
+            </h6>
+        </label>
+    </header>
+    <div id="pay_paynet" class="collapse show" data-parent="#accordion_pay">
+        <form class="form-inline text-center mb-4">
+            <input type="text" class="form-control mr-2" placeholder="+91"{{request.user.phone_number}} name="telephone" style="margin-top: 10px; margin-left: 20px; align: center; width: 200px">
+            <input type="text" class="form-control mr-2" placeholder="upi id - xyz123@bankname" name="upi id" style="margin-top: 10px; align: center; width: 200px">
+            <button class="btn btn btn-success" style="margin-top: 10px">submit</button>
+        </form> 
+    </div> <!-- collapse .// --> 
+</div> <!-- card.// -->
+
+<div class="card">
+<header class="card-header">
+    <img src="./images/misc/payment" class="float-right" height="24">  
+    <label class="form-check" data-toggle="collapse" data-target="#pay_payme">
+        <input class="form-check-input" name="payment-option" type="radio" value="option2">
+        <h6 class="form-check-label"> Credit Card  </h6>
+    </label>
+</header>
+
+<div id="pay_payme" class="collapse" data-parent="#accordion_pay">
+    <div class="card-body">
+        <p class="alert alert-success">Some information or instruction</p>
+        <form class="form-inline">
+            <input type="text" class="form-control mr-2" placeholder="xxxx-xxxx-xxxx-xxxx" name="">
+            <input type="text" class="form-control mr-2" style="width: 100px"  placeholder="dd/yy" name="">
+            <input type="number" maxlength="3" class="form-control mr-2"  style="width: 100px"  placeholder="cvc" name="">
+            <button class="btn btn btn-success">submit</button>
+        </form>
+    </div>
+</div> <!-- collapse .// -->
+</div> <!-- card.// -->
+
+</article> 
+<!-- accordion end.// -->
+
+</main> <!-- col.// -->
+<aside class="col-lg-4">
+    
+    <div class="card">
+        <div class="card-body">
+            <dl class="dlist-align">
+              <dt>Total price:</dt>
+              <dd class="text-right">${{total}}</dd>
+            </dl>
+            <dl class="dlist-align">
+              <dt>Tax:</dt>
+              <dd class="text-right"> $10.00</dd>
+            </dl>
+            <dl class="dlist-align">
+              <dt>Total:</dt>
+              <dd class="text-right text-dark b"><strong>${{final_total}}</strong></dd>
+            </dl>
+            <a href="{% url 'place_order' %}" class="btn btn-primary btn-block"> Place Order </a>
+            <a href="{% url 'cart_details' %}" class="btn btn-light btn-block"> Back to cart </a>
+        </div> <!-- card-body.// -->
+    </div> <!-- card.// -->
+</aside> <!-- col.// -->
+</div> <!-- row.// -->
+
+<!-- ============================ COMPONENT 2 END//  ================================= -->
+
+
+
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+<!-- ========================= SECTION CONTENT END// ========================= -->
+</body>
+</html>
+
+{% endblock %}
